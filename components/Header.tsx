@@ -6,9 +6,11 @@ import { Activity, Bell, ChevronDown, Settings, Zap } from 'lucide-react'
 interface HeaderProps {
   onBack?: () => void
   activeSkill?: string | null
+  onMarketsClick?: () => void
+  currentView?: string
 }
 
-export default function Header({ onBack, activeSkill }: HeaderProps) {
+export default function Header({ onBack, activeSkill, onMarketsClick, currentView }: HeaderProps) {
   const [time, setTime] = useState('')
   const [notifications] = useState(3)
 
@@ -68,19 +70,24 @@ export default function Header({ onBack, activeSkill }: HeaderProps) {
 
       {/* Center: Nav */}
       <nav className="hidden md:flex items-center gap-1">
-        {['Skills Hub', '市场概览', '我的持仓', '绩效分析'].map((item, i) => (
-          <button
-            key={item}
-            className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${
-              i === 0
-                ? 'text-white font-medium'
-                : 'text-slate-400 hover:text-slate-200'
-            }`}
-            style={i === 0 ? { background: 'rgba(79,136,255,0.12)', color: '#4f88ff' } : {}}
-          >
-            {item}
-          </button>
-        ))}
+        {[
+          { label: 'Skills Hub', view: 'home' },
+          { label: '市场概览', view: 'markets' },
+          { label: '我的持仓', view: '' },
+          { label: '绩效分析', view: '' },
+        ].map(({ label, view }) => {
+          const isActive = view === 'markets' ? currentView === 'markets' : view === 'home' ? currentView !== 'markets' : false
+          return (
+            <button
+              key={label}
+              onClick={view === 'markets' ? onMarketsClick : view === 'home' ? onBack : undefined}
+              className="px-3 py-1.5 text-sm rounded-lg transition-colors"
+              style={isActive ? { background: 'rgba(79,136,255,0.12)', color: '#4f88ff' } : { color: '#94a3b8' }}
+            >
+              {label}
+            </button>
+          )
+        })}
       </nav>
 
       {/* Right: Status + User */}
