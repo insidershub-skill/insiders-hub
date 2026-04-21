@@ -4,9 +4,9 @@ import { useEffect, useState } from 'react'
 import { TrendingUp, DollarSign, Target, Zap, BarChart2, Users } from 'lucide-react'
 
 const stats = [
-  { icon: DollarSign, label: '总持仓价值', value: 248650, prefix: '$', suffix: '', color: '#00d4aa', change: '+12.4%' },
-  { icon: Target, label: '活跃市场', value: 47, prefix: '', suffix: ' 个', color: '#4f88ff', change: '+3' },
-  { icon: TrendingUp, label: '今日胜率', value: 73.2, prefix: '', suffix: '%', color: '#a855f7', change: '+5.1%' },
+  { icon: DollarSign, label: '总持仓价值', value: 4444, prefix: '$', suffix: '', color: '#00d4aa', change: '+12.4%' },
+  { icon: Target, label: '活跃市场', value: 1427, prefix: '', suffix: ' 个', color: '#4f88ff', change: '+3' },
+  { icon: TrendingUp, label: '今日胜率', value: 72.2, prefix: '', suffix: '%', color: '#a855f7', change: '+5.1%' },
   { icon: BarChart2, label: '7日收益', value: 18420, prefix: '+$', suffix: '', color: '#00d4aa', change: '+7.3%' },
   { icon: Zap, label: 'Skills 执行次数', value: 1284, prefix: '', suffix: ' 次', color: '#ffa502', change: '今日' },
   { icon: Users, label: '跟单用户数', value: 3621, prefix: '', suffix: '', color: '#4f88ff', change: '+124' },
@@ -70,7 +70,7 @@ function StatItem({ stat, index }: { stat: typeof stats[0]; index: number }) {
   )
 }
 
-export default function HeroStats() {
+export default function HeroStats({ onMarketsClick }: { onMarketsClick?: () => void }) {
   return (
     <section className="px-6 pt-6 pb-2">
       {/* Title row */}
@@ -93,7 +93,11 @@ export default function HeroStats() {
       {/* Stats grid */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
         {stats.map((stat, i) => (
-          <StatItem key={stat.label} stat={stat} index={i} />
+          <div key={stat.label}
+            onClick={stat.label === '活跃市场' ? onMarketsClick : undefined}
+            style={{ cursor: stat.label === '活跃市场' ? 'pointer' : 'default' }}>
+            <StatItem stat={stat} index={i} />
+          </div>
         ))}
       </div>
     </section>
